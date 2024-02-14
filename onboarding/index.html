@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Braze Component - Onboarding</title>
+    <style>
+      @font-face {
+        font-family: Futura PT;
+        src: url("./Futura-Medium.ttf");
+      }
+
+      @font-face {
+        font-family: Balloon Becker;
+        src: url("./balloon_becker_ext_bold.ttf");
+      }
+
+      html, body {
+        min-height: 100vh;
+      }
+
+      body{
+        display: flex;
+        flex-direction: column;
+        background-image: url("./background.png");
+        margin: 0;
+        padding: 80px 16px 64px 16px;
+        box-sizing: border-box;
+      }
+
+      header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      h1{
+        color:  #FFF;
+        text-align: center;
+        font-family: Balloon Becker;
+        font-size: 24px;
+        padding: 0;
+        margin: 0;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 30px; /* 125% */
+      }
+
+      p{
+        color: #FFF;
+        text-align: center;
+        font-family: Futura PT;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px; /* 150% */
+        letter-spacing: 0.5px;
+      }
+
+      main{
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 32px;
+      }
+
+      .logo-icon{
+        width: 95px;
+        height: 56px;
+        padding: 0 4px 0 4px
+      }
+
+      .header-button{
+        background: none;
+        border: none;
+        padding: 0px 24px 0px, 0px;
+        cursor: pointer;
+        outline: inherit;
+        color: #FFF;
+        text-align: center;
+        font-family: Futura PT;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px; 
+        letter-spacing: 0.1px;
+      }
+
+      .header-button:active{
+        opacity: 0.5;
+      }
+
+      .text-content{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 4px;
+      }
+
+      .action-button{
+        display: flex;
+        width: 300px;
+        height: 40px;
+        padding: 0px 24px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        border: unset;
+        border-radius: 50px;
+        background:  #FFF;
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+        color: #282859;
+        text-align: center;
+        font-family: Futura PT;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: 0.1px;
+      }
+
+      .action-button:active{
+        opacity: 0.5;
+      }
+
+      .slider {
+        width: 100%;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      .slider-content {
+        display: flex;
+        scroll-snap-align: center;
+        scroll-snap-type: x mandatory;
+        scroll-snap-stop: always;
+        scroll-behavior: smooth;
+        overflow-x: auto;
+
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .slider-content::-webkit-scrollbar {
+        display: none;
+      }
+
+      .slider-item {
+        scroll-snap-align: start;
+        flex-shrink: 0;
+        width: 100%;
+        height: 400px;
+        transform-origin: center center;
+        transform: scale(1);
+        transition: transform 0.5s;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 100px;
+      }
+
+      .slider-buttons{
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap:16px
+      }
+
+      .slider-button{
+        display: block;
+        width: 10px;
+        height: 10px;
+        background: #D9D9D9;
+        border-radius: 50%;
+      }
+
+      .slider-button.selected {
+        background: #FDB614;
+      }
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="logo.png" class="logo-icon"/>
+      <a class="header-button"></a>
+    </header>
+    <main>
+      <div class="slider">
+        <div class="slider-content">
+        </div>
+        <div class="slider-buttons">      
+        </div>
+      </div>
+      <div class="text-content">
+        <h1>EARN</h1>
+        <p>Rack up Varsity points for every single $ that you spend at Varsity.</p>
+      </div>
+      <a class="action-button"></a>
+    </main>
+	  <script type="text/javascript">
+      class Slide{
+        constructor(url,index,slider){
+          this.url = url
+          this.index = index
+          this.slider = slider
+          this.element = this.createSlideElement()
+          this.anchorElement = this.createAnchorElement()
+        }
+
+        createSlideElement(){
+          const imageElement = document.createElement("img")
+          imageElement.setAttribute("src",this.url)
+
+          const slideElement = document.createElement("div")
+
+          slideElement.setAttribute("class","slider-item")
+          slideElement.setAttribute("id",`slide-${this.index + 1}`)
+          slideElement.appendChild(imageElement)
+        
+          return slideElement
+        }
+        
+        createAnchorElement(){
+          const anchorElement = document.createElement("a")
+        
+          anchorElement.setAttribute("class","slider-button")
+          anchorElement.setAttribute("href",`#slide-${this.index + 1}`)
+
+          return anchorElement
+        }
+
+        inViewport(){
+          const eBounds = this.element.getBoundingClientRect()
+          const cBounds = this.slider.contentElement.getBoundingClientRect()
+      
+          return eBounds.left === cBounds.left && eBounds.right === cBounds.right;
+        };
+      }
+
+      class Slider{
+        constructor(images,onScrollTo){
+          this.images = images
+          this.currentIndex = 0
+          this.onScrollTo = onScrollTo
+          this.contentElement = document.querySelector(".slider-content")
+          this.buttonsElements = document.querySelector(".slider-buttons")
+          this.slides = []
+
+          this.init()
+        }
+
+        init(){
+          for(var i = 0; i < this.images.length; i ++){
+            const image = this.images[i]
+            const slide = new Slide(image,i,this)
+            this.slides.push(slide)
+          
+            this.contentElement.appendChild(slide.element)
+            this.buttonsElements.appendChild(slide.anchorElement)
+          }
+
+          this.contentElement.addEventListener("scroll",(e)=>{
+            for(var i = 0; i < this.slides.length; i++){
+              const slide = this.slides[i]
+              if(slide.inViewport()) this.setCurrentIndex(i)
+            }
+          })
+
+          this.setCurrentIndex(0)
+        }
+        
+        setCurrentIndex(index){
+          if(this.currentIndex != null){
+            this.slides[this.currentIndex].anchorElement.classList.remove("selected");
+          }
+
+          this.slides[index].anchorElement.classList.add("selected");
+          this.currentIndex = index
+          if(this.onScrollTo) this.onScrollTo(index)
+        }
+
+        scrollTo(index){
+          if(index < this.images.length){
+            const element = this.slides[index].element
+            element.scrollIntoView()
+          }
+        }
+
+        nextSlide(){
+          this.scrollTo(this.currentIndex + 1)
+        }
+
+        lastSlide(){
+          this.scrollTo(this.images.length - 1)
+        }
+      }
+
+      function main(){
+        const images =[
+          "./slide1.png",
+          "./slide2.png",
+          "./slide3.png"
+        ]
+
+        const headerButton ={
+          element: document.querySelector(".header-button"),
+          listener: null
+        } 
+        const actionButton = {
+          element: document.querySelector(".action-button"),
+          listener: null
+        }
+
+        const slider = new Slider(images,onSliderScrollTo)
+
+        function onSliderScrollTo(index){
+          actionButton.element.removeEventListener("click",actionButton.listener)
+          headerButton.element.removeEventListener("click",headerButton.listener)
+
+          if(index === images.length -1){ //Last Page
+            actionButton.element.textContent = "Enable Push Notifications"
+            headerButton.element.textContent = "Close"
+
+            actionButton.listener = actionButton.element.addEventListener("click",()=> requestPushPermission(),{once: true})
+            headerButton.listener = headerButton.element.addEventListener("click",()=> close(),{once: true})
+          }
+          else{ // Other Pages
+            actionButton.element.textContent = "Continue"
+            headerButton.element.textContent = "Skip"
+
+            actionButton.listener = actionButton.element.addEventListener("click",()=> slider.nextSlide(),{once: true})
+            headerButton.listener = headerButton.element.addEventListener("click",()=> slider.lastSlide(),{once: true})
+          }
+        }
+
+        function close(){
+          console.log("close")
+          if(appboyBridge) appboyBridge.closeMessage()
+        }
+
+        function requestPushPermission(){
+          console.log("requestPushPermission")
+          if(appboyBridge) appboyBridge.requestPushPermission(successCallback, deniedCallback)
+          close()
+        }
+      }
+    
+      const listener = window.addEventListener("ab.BridgeReady", main)
+      if(!listener) main()
+
+    </script>
+  </body>
+</html>
